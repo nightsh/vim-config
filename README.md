@@ -8,6 +8,6 @@ screenshots instead:
 [vim running in LilyTerm with t_Co=256]
 
 
-![Gvim running in KDE, color scheme is codeschool](hhttps://raw.github.com/nightsh/vim-config/master/images/gvim.png "Gvim running in KDE, color scheme is codeschool")
+![Gvim running in KDE, color scheme is codeschool](https://raw.github.com/nightsh/vim-config/master/images/gvim.png "Gvim running in KDE, color scheme is codeschool")
 
 [Gvim running in KDE, color scheme is codeschool]
