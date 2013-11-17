@@ -1,6 +1,6 @@
 " {{{ Set up Vundle
     set nocompatible              " be iMproved
-    filetype off                  " required!
+    filetype on                 " required!
 
     set rtp+=~/.vim/bundle/vundle/
     call vundle#rc()
@@ -319,6 +319,12 @@
         " Documentation block templates and hotkey
         let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates"
         nnoremap <buffer> <Leader>p :call pdv#DocumentCurrentLine()<CR>
+        let g:ctrlp_follow_symlinks = 2
+        let g:EclimCompletionMethod = 'omnifunc'
+        autocmd Filetype php setlocal omnifunc=eclim#php#complete#CodeComplete
+        set completeopt-=preview
+        let g:ycm_add_preview_to_completeopt=0
+
     "}}}
     "{{{ NerdTree
         map <C-e> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
