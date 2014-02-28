@@ -1,153 +1,434 @@
-" {{{ Set up Vundle
-    set nocompatible              " be iMproved
-    filetype on                 " required!
+" based on http://github.com/jferris/config_files/blob/master/vimrc
 
-    set rtp+=~/.vim/bundle/vundle/
-    call vundle#rc()
+" Use Vim settings, rather then Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible              " be iMproved
+filetype off                  " required!
 
-    filetype plugin indent on     " required!
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+"let Vundle manage Vundle
+" required! 
+Bundle 'gmarik/vundle'
+
+" My bundles here:
+"
+" original repos on GitHub
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-unimpaired'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-abolish'
+Bundle 'tpope/vim-rails.git'
+Bundle 'tpope/vim-repeat'
+Bundle 'vim-ruby/vim-ruby'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'mattn/emmet-vim'
+Bundle 'godlygeek/tabular'
+Bundle 'vim-scripts/tComment'
+Bundle 'myusuf3/numbers.vim'
+Bundle 'sickill/vim-monokai'
+" snip mate and it's dependencyes
+Bundle "MarcWeber/vim-addon-mw-utils"
+Bundle "tomtom/tlib_vim"
+Bundle "garbas/vim-snipmate"
+" Optional:
+Bundle "honza/vim-snippets"
+
+" vim-misk is needed by vim-easytags
+Bundle 'xolox/vim-misc'
+Bundle 'xolox/vim-easytags'
+Bundle 'taglist.vim'
+Bundle 'majutsushi/tagbar'
+Bundle 'Shougo/neocomplete.vim'
+Bundle 'vim-scripts/EasyGrep'
+Bundle 'jaredly/vim-debug'
+Bundle 'rking/ag.vim'
+Bundle 'bling/vim-airline'
+Bundle 'Shougo/unite.vim'
+Bundle 'tsukkee/unite-help'
+Bundle 'thinca/vim-unite-history'
+Bundle 'Shougo/unite-outline'
+Bundle 'scrooloose/nerdtree'
+Bundle 'rodjek/vim-puppet'
+" Bundle 'Shougo/vimproc.vim'
+
+" spf13 bundles
+    "UnBundle 'spf13/PIV'
+    Bundle 'rayburgemeestre/phpfolding.vim'
+    Bundle 'python.vim'
+    Bundle 'pythoncomplete'
+    Bundle 'klen/python-mode'
+    Bundle 'elzr/vim-json'
+    Bundle 'pangloss/vim-javascript'
+    Bundle 'groenewege/vim-less'
+    Bundle 'hail2u/vim-css3-syntax'
+    Bundle 'gorodinskiy/vim-coloresque'
+    Bundle 'tpope/vim-markdown'
+    Bundle 'spf13/vim-preview'
+    Bundle 'beyondwords/vim-twig'
+    Bundle 'scrooloose/nerdcommenter'
+    Bundle 'terryma/vim-multiple-cursors'
+    Bundle 'mbbill/undotree'
+    Bundle 'nathanaelkane/vim-indent-guides'
+    Bundle 'vim-scripts/restore_view.vim'
+
+Bundle 'sandeepcr529/Buffet.vim'
+Bundle 'Shougo/neomru.vim'
+Bundle 'godlygeek/csapprox'
+
+" vim-scripts repos
+Bundle 'L9'
+
+nnoremap <C-S-z> :Bufferlistsw<CR>
+
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+set nobackup
+set noswapfile
+set nowritebackup
+set history=1000		" keep 50 lines of command line history
+set ruler		" show the cursor position all the time
+set showcmd		" display incomplete commands
+set incsearch		" do incremental searching
+set cursorline
+
+" Don't use Ex mode, use Q for formatting
+map Q gq
+
+" This is an alternative that also works in block mode, but the deleted
+" text is lost and it only works for putting the current register.
+"vnoremap p "_dp
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
+  syntax on
+  set hlsearch
+endif
+
+  set t_Co=256
+if $COLORTERM == 'gnome-terminal' || $TERM == 'xterm' || $TERM == 'screen'
+  set t_Co=256
+endif
+
+if $COLORTERM == 'drop-down-terminal'
+  " set t_Co=256
+  colorscheme desert 
+else
+  " Color scheme
+  colorscheme monokai
+endif
+
+" Switch wrap off for everything
+set nowrap
+
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
+  " Enable file type detection.
+  " Use the default filetype settings, so that mail gets 'tw' set to 72,
+  " 'cindent' is on in C files, etc.
+  " Also load indent files, to automatically do language-dependent indenting.
+  filetype plugin indent on
+
+  " Set File type to 'text' for files ending in .txt
+  autocmd BufNewFile,BufRead *.txt setfiletype text
+
+  " Enable soft-wrapping for text files
+  autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
+
+  " Put these in an autocmd group, so that we can delete them easily.
+  augroup vimrcEx
+  au!
+
+  " For all text files set 'textwidth' to 78 characters.
+  " autocmd FileType text setlocal textwidth=78
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
+  " Automatically load .vimrc source when saved
+  autocmd BufWritePost .vimrc source $MYVIMRC
+
+  augroup END
+
+else
+
+  set autoindent		" always set autoindenting on
+
+endif " has("autocmd")
+
+" if has("folding")
+  " set foldenable
+  " set foldmethod=syntax
+  " set foldlevel=1
+  " set foldnestmax=2
+  " set foldtext=strpart(getline(v:foldstart),0,50).'\ ...\ '.substitute(getline(v:foldend),'^[\ #]*','','g').'\ '
+" endif
+
+" Softtabs, 2 spaces
+set tabstop=2
+set shiftwidth=2
+set expandtab
+
+" Always display the status line
+set laststatus=2
+
+let g:airline_theme='powerlineish'
+let g:airline_powerline_fonts=1
+" let g:airline#extensions#tabline#enabled = 1
+
+" Edit the README_FOR_APP (makes :R commands work)
+" map <Leader>R :e doc/README_FOR_APP<CR>
+
+" Leader shortcuts for Rails commands
+" map <Leader>m :Rmodel 
+" map <Leader>c :Rcontroller 
+" map <Leader>v :Rview 
+" map <Leader>u :Runittest 
+" map <Leader>f :Rfunctionaltest 
+" map <Leader>f :FufFile<CR>
+" map <Leader>tm :RTmodel 
+" map <Leader>tc :RTcontroller 
+" map <Leader>tv :RTview 
+" map <Leader>tu :RTunittest 
+" map <Leader>tf :RTfunctionaltest 
+" map <Leader>sm :RSmodel 
+" map <Leader>sc :RScontroller 
+" map <Leader>sv :RSview 
+" map <Leader>su :RSunittest 
+" map <Leader>sf :RSfunctionaltest 
+
+" Hide search highlighting
+map <Leader>H :set invhls <CR>
+
+" Opens an edit command with the path of the currently edited file filled in
+" Normal mode: <Leader>e
+map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
+
+" Opens a tab edit command with the path of the currently edited file filled in
+" Normal mode: <Leader>t
+map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
+
+" Inserts the path of the currently edited file into a command
+" Command mode: Ctrl+P
+cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
+
+" Duplicate a selection
+" Visual mode: D
+vmap D y'>p
+
+" Press Shift+P while in visual mode to replace the selection without
+" overwriting the default register
+vmap P p :call setreg('"', getreg('0')) <CR>
+
+" For Haml
+au! BufRead,BufNewFile *.haml         setfiletype haml
+
+" No Help, please
+nmap <F1> <Esc>
+
+" Press ^F from insert mode to insert the current file name
+imap <C-F> <C-R>=expand("%")<CR>
+
+" Maps autocomplete to tab
+" imap <Tab> <C-N>
+
+imap <C-L> <Space>=><Space>
+
+" Display extra whitespace
+" set list listchars=tab:»·,trail:·
+
+" Edit routes
+command! Rroutes :e config/routes.rb
+command! Rschema :e db/schema.rb
+
+" Local config
+if filereadable(".vimrc.local")
+  source .vimrc.local
+endif
+
+" Use Ack instead of Grep when available
+if executable("ack")
+  set grepprg=ack\ -H\ --nogroup\ --nocolor\ --ignore-dir=tmp\ --ignore-dir=coverage
+endif
 
 
-    " Use local bundles if available
-    if filereadable(expand("~/.vimrc.bundles"))
-        source ~/.vimrc.bundles
-    endif
-" }}}
+" Numbers
+set number
+set numberwidth=5
+
+" Snippets are activated by Shift+Tab
+let g:snippetsEmu_key = "<S-Tab>"
+
+" Tab completion options
+" (only complete to the longest unambiguous match, and show a menu)
+set completeopt=longest,menu
+set wildmode=list:longest,list:full
+set complete=.,t
+
+" case only matters with mixed case expressions
+set ignorecase
+set smartcase
+
+" Tags
+let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
+set tags=./tags;
+
+" Write file
+nnoremap ZW :w<CR>
+
+" set the system cliboard as the default yank source                                                                                                                                                                                      
+set clipboard=unnamedplus 
+
+" Minimize and maximize
+nnoremap <C-W>O :call MaximizeToggle()<CR>
+nnoremap <C-W>o :call MaximizeToggle()<CR>
+nnoremap <C-W><C-O> :call MaximizeToggle()<CR>
+function! MaximizeToggle()
+  if exists("s:maximize_session")
+    exec "source " . s:maximize_session
+    call delete(s:maximize_session)
+    unlet s:maximize_session
+    let &hidden=s:maximize_hidden_save
+    unlet s:maximize_hidden_save
+  else
+    let s:maximize_hidden_save = &hidden
+    let s:maximize_session = tempname()
+    set hidden
+    exec "mksession! " . s:maximize_session
+    only
+  endif
+endfunction
+
+" Ag.vim script for easy search
+function! SilverSearch(word)
+  let @s = expand(a:word)
+  let l:ag_cmd = "Ag " . shellescape(@s) . " ."
+  call histadd("cmd", l:ag_cmd)
+  set hidden
+  execute l:ag_cmd
+endfunction
+
+autocmd FileType unite call s:unite_my_settings()
+function! s:unite_my_settings()
+  " Overwrite settings.
+  imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+  imap <silent><buffer><expr> <C-p> unite#do_action('split')
+endfunction
+
+" silver searcher
+let g:agprg="ag --column"
+
+" copy the default clipboard into the system clipboard
+map <Leader>= :let @+=@"<CR>
+
+" You complete me disabled for tab, only for control space
+" let g:ycm_auto_trigger = 0
+let g:ycm_key_list_select_completion = ['<C-j>', '<C-Space>']
+let g:ycm_key_list_previous_completion = ['<C-k']
+
+" Remap tab to snip mate
+imap <Tab> <Plug>snipMateNextOrTrigger
+smap <Tab> <Plug>snipMateNextOrTrigger
+
+" numbers do not show for Control+C, they show only for Esc
+map <C-C> <ESC>
+" search with ag for the content of register s
+map <Leader><leader>a :call SilverSearch("<cword>")<CR>
+map <Leader><leader>A :call SilverSearch("<cWORD>")<CR>
+
+" Unite.vim
+nnoremap <Leader><Leader>p :Unite -start-insert buffer file_mru file_rec -no-split<CR>
+nnoremap <Leader><Leader>l :Unite -start-insert line -auto-preview -vertical<CR>
+nnoremap <Leader><Leader>m :Unite -start-insert mapping -no-split<CR>
+nnoremap <Leader><Leader>c :Unite -buffer-name=commands -default-action=execute history/command command -start-insert -no-split<CR>
+nnoremap <Leader><Leader>h :Unite -start-insert -no-split help<CR>
+nnoremap <Leader><Leader>o :Unite -start-insert -no-split outline<CR>
+nnoremap <Leader><Leader>o :Unite -start-insert -no-split outline<CR>
+nnoremap <Leader><Leader>r :%S/<C-R>s/<C-R>s/gc
+nnoremap <Leader>g :Gstatus<CR>
+nnoremap <C-W>x :only<CR>
 
 
-" {{{ Basic interface settings: colors and stuff
+if exists(":Tabularize")
+  nmap <Leader>a= :Tabularize /=<CR>
+  vmap <Leader>a= :Tabularize /=<CR>
+  nmap <Leader>a: :Tabularize /:\zs<CR>
+  vmap <Leader>a: :Tabularize /:\zs<CR>
+  nmap <Leader>a^ :Tabularize /^\zs<CR>
+  vmap <Leader>a^ :Tabularize /^\zs<CR>
+endif
 
-    if !has('gui')
-        "set term=$TERM          " Make arrow and other keys work
-    endif
-    set t_Co=256
-    set background=dark
-    "colorscheme codeschool       " Color scheme - override it below for GTK version
-    filetype plugin indent on    " Detect file types
-    syntax on                    " Syntax highlighting
-    syntax sync minlines=500     " Limit for highlighting, performance tweak
-    set mousehide                " Hide mouse while typing
-    scriptencoding utf-8
 
-    set clipboard=unnamedplus    " On GNU/Linux, use the + register for shared clipboard
-    
-    set shortmess+=filmnrxoOtT   " Short message format
-    set viewoptions=folds,options,cursor,unix,slash  " Steve used it, seems good, I got it too
-    set history=1000             " Override default history size (20)
-    set hidden                   " Allow leaving buffer w/out 
+" ******************************************************************
+" Stuff copied from spf13
 
-" }}}
-" {{{ Configure VIM UI
-    set showmode                 " Display current mode
-    set cursorline               " Highlight current line
-    if has('cmdline_info')
-        set ruler                " Show the ruler
-    set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
-    set showcmd              " Show typed characters
-    endif
-    if has('statusline')
-        set laststatus=2
+highlight clear SignColumn      " SignColumn should match background
+highlight clear LineNr          " Current line number row will have same background color in relative mode
+set backspace=indent,eol,start  " Backspace for dummies
+set ignorecase                  " Case insensitive search
+set smartcase                   " Case sensitive when uc present
+set wildmenu                    " Show list instead of just completing
+set wildmode=list:longest,full  " Command <Tab> completion, list matches, then longest common part, then all.
+set whichwrap=b,s,h,l,<,>,[,]   " Backspace and cursor keys wrap too
+set scrolljump=5                " Lines to scroll when cursor leaves screen
+set scrolloff=3                 " Minimum lines to keep above and below cursor
+set foldenable                  " Auto fold code
+set list
+set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
 
-        " Broken down into easily includeable segments
-        set statusline=%<%f\     " Filename
-        set statusline+=%w%h%m%r " Options
-        set statusline+=%{fugitive#statusline()} "  Git Hotness
-        set statusline+=\ [%{&ff}/%Y]            " filetype
-        set statusline+=\ [%{getcwd()}]          " current dir
-        set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
-    endif
+nnoremap <C-E> :NERDTreeToggle<CR>
 
-    set backspace=indent,eol,start    " Easier backspace
-    set linespace=0                   " No space between rows
-    set nu                            " Turn on the line numbers
-    set showmatch                     " Highlight matching brackets
-    set incsearch                     " Enable incremental search
-    set hlsearch                      " highlight search terms
-    set winminheight=0                " Windows of 0 height are allowed
-    set ignorecase                    " Turn off case sensitive search
-    set smartcase                     " ...
-    set wildmenu                      " List variants, don't autocomplete
-    set wildmode=list:longest,full    " Wildmenu settings
-    set whichwrap=b,s,h,l,<,>,[,]     " Wrap, wrap everywhere!
-    set scrolljump=5                  " Lines to scroll when cursor leaves the screen
-    set scrolloff=3                   " Minimum lines to keep visible as line context
-    set foldenable                    " Automatically fold code
-    set foldmethod=marker             " Default to marker folding method
-    set nolist
-    set listchars=tab:,.,trail:.,extends:#,nbsp:. " Highlight problematic whitespace
-
-    autocmd InsertEnter * :set number
-    au FocusLost * :set number
-    au FocusGained * :set relativenumber
-
-    let loaded_matchparen = 1
-    syn match Normal '>'
-
-    set matchtime=1                   " 
-    let b:match_debug=1               " For some reason, matchit was broken without this
-    
-    set colorcolumn=81                " highlight at 80 characters
-    hi ColorColumn ctermbg=233        " Column color
-    hi clear CursorLine
-    hi CursorLine term=underline cterm=underline
-
-    hi Search cterm=NONE ctermfg=black ctermbg=darkgray " Hijack search results colors
-    hi Search ctermbg=233 ctermbg=253 " 
-
-    " Go back to last used line in opened file
-    autocmd BufReadPost *
-      \ if line("'\"") > 0 && line("'\"") <= line("$") |
-      \   exe "normal g`\"" |
-      \ endif
-
-" }}}
-" {{{ GUI Settins
-    if has('gui_running')
-        set guioptions-=T           " remove the toolbar
-        set lines=40                " 40 lines of text instead of 24,
-        set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
-        set guioptions-=m           " Remove the menu
-        set guioptions-=r           " 
-        set guioptions-=L           " 
-        set guioptions+=c           " Enable console dialogs instead of GTK
-        colorscheme codeschool      " Color scheme for GUI mode
-        hi Search guifg=black guibg=darkgray
-    endif
-" }}}
-
-" {{{ Formatting
-    set nowrap                      " wrap long lines
-    set autoindent                  " indent at the same level of the previous line
-    set shiftwidth=4                " use indents of 4 spaces
-    set expandtab                   " tabs are spaces, not tabs
-    set tabstop=4                   " an indentation every four columns
-    set softtabstop=4               " let backspace delete indent
-    set matchpairs+=<:>                " match, to be used with %
-    set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
-    set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
-    " Remove trailing whitespaces and ^M chars
-    autocmd FileType c,cpp,java,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
-    autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
-" }}}
-
-" {{{ Set directories
-    set backup                   " Enable backups
-    if has('persistent_undo')
-        set undofile
-    set undolevels=1000
-    set undoreload=10000
-    endif
-" }}}
-
-" {{{ Key mappings
-
-    let mapleader = ','          " Leader is comma (,) character
-
+    set nowrap                      " Do not wrap long lines
+    set autoindent                  " Indent at the same level of the previous line
+    set shiftwidth=4                " Use indents of 4 spaces
+    set expandtab                   " Tabs are spaces, not tabs
+    set tabstop=4                   " An indentation every four columns
+    set softtabstop=4               " Let backspace delete indent
+    set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
+    set splitright                  " Puts new vsplit windows to the right of the current
+    set splitbelow                  " Puts new split windows to the bottom of the current
+      
     " Wrapped lines goes down/up to next row, rather than next line in file.
-    nnoremap j gj
-    nnoremap k gk
+    noremap j gj
+    noremap k gk
+    
+    " Same for 0, home, end, etc
+    function! WrapRelativeMotion(key, ...)
+        let vis_sel=""
+        if a:0
+            let vis_sel="gv"
+        endif
+        if &wrap
+            execute "normal!" vis_sel . "g" . a:key
+        else
+            execute "normal!" vis_sel . a:key
+        endif
+    endfunction
 
-    " Shift key fixes
+    " Map g* keys in Normal, Operator-pending, and Visual+select (over written
+    " below) modes
+    noremap $ :call WrapRelativeMotion("$")<CR>
+    noremap <End> :call WrapRelativeMotion("$")<CR>
+    noremap 0 :call WrapRelativeMotion("0")<CR>
+    noremap <Home> :call WrapRelativeMotion("0")<CR>
+    noremap ^ :call WrapRelativeMotion("^")<CR>
+    " Over write the Visual+Select mode mappings to ensure correct mode is
+    " passed to WrapRelativeMotion
+    vnoremap $ :<C-U>call WrapRelativeMotion("$", 1)<CR>
+    vnoremap <End> :<C-U>call WrapRelativeMotion("$", 1)<CR>
+    vnoremap 0 :<C-U>call WrapRelativeMotion("0", 1)<CR>
+    vnoremap <Home> :<C-U>call WrapRelativeMotion("0", 1)<CR>
+    vnoremap ^ :<C-U>call WrapRelativeMotion("^", 1)<CR>
+
+    " Stupid shift key fixes
     command! -bang -nargs=* -complete=file E e<bang> <args>
     command! -bang -nargs=* -complete=file W w<bang> <args>
     command! -bang -nargs=* -complete=file Wq wq<bang> <args>
@@ -157,227 +438,29 @@
     command! -bang Q q<bang>
     command! -bang QA qa<bang>
     command! -bang Qa qa<bang>
+    cmap Tabe tabe
 
     " Yank from the cursor to the end of the line, to be consistent with C and D.
     nnoremap Y y$
-    " Clear highlighted search
-    nmap <silent> <leader>/ :nohlsearch<CR>
 
-    " {{{ Shortcuts
-        " Change Working Directory to that of the current file
-        cmap cwd lcd %:p:h
-        cmap cd. lcd %:p:h
-
-        " visual shifting (does not exit Visual mode)
-        vnoremap < <gv
-        vnoremap > >gv
+        nmap <silent> <leader>/ :nohlsearch<CR>
         
-        " For when you forget to sudo.. Really Write the file.
-        cmap w!! w !sudo tee % >/dev/null
+    " Visual shifting (does not exit Visual mode)
+    vnoremap < <gv
+    vnoremap > >gv
+    
+    " Allow using the repeat operator with a visual selection (!)
+    " http://stackoverflow.com/a/8064607/127816
+    vnoremap . :normal .<CR>
 
-        " map <Leader>ff to display all lines with keyword under cursor
-        " and ask which one to jump to
-        nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+    " For when you forget to sudo.. Really Write the file.
+    cmap w!! w !sudo tee % >/dev/null
 
-        " C-R fires up a s/<word under cursor>/<enter replacement>/gc
-        vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+    " Easier horizontal scrolling
+    map zl zL
+    map zh zH
 
-        " Ported those from old config, but I can't recall using them
-        nnoremap <C-W>O :call MaximizeToggle ()<CR>
-        nnoremap <C-W>o :call MaximizeToggle ()<CR>
-        nnoremap <C-W><C-O> :call MaximizeToggle ()<CR>
-
-        " Random custom crap, feel free to nuke them
-        nnoremap <Leader>w :cd /srv/http<CR>
-        silent! vunmap <Esc>[H
-        silent! vunmap <Esc>[F
-        silent! nunmap <Esc>[H
-        silent! nunmap <Esc>[F
-        silent! iunmap <Esc>[H
-        silent! iunmap <Esc>[F
-        silent! unmap <Esc>[H
-        silent! unmap <Esc>[F
-
-        " Control + arrows switch window
-        nnoremap <silent> <C-Right> <c-w>l
-        nnoremap <silent> <C-Left> <c-w>h
-        nnoremap <silent> <C-Up> <c-w>k
-        nnoremap <silent> <C-Down> <c-w>j
-
-        " Faster resize windows
-        map <silent> <C-h> 5<C-w><
-        map <silent> <C-l> 5<C-w>>
-
-        " Various useful shortcuts
-        nnoremap <silent> <F3> :Grep<CR> 
-        nnoremap <silent> <F10> :GundoToggle<CR> 
-        nnoremap <silent> <C-T> :TagbarToggle<CR>
-        nnoremap <Leader><F11> :SyntasticToggleMode
-        nnoremap <C-Z> :Bufferlistsw<CR>
-
-    " }}}
-" }}}
-
-"{{{ spf13 original functions
-
-    function! UnBundle(arg, ...)
-      let bundle = vundle#config#init_bundle(a:arg, a:000)
-      call filter(g:bundles, 'v:val["name_spec"] != "' . a:arg . '"')
-    endfunction
-
-    com! -nargs=+         UnBundle
-    \ call UnBundle(<args>)
-
-    function! InitializeDirectories()
-        let separator = "."
-        let parent = $HOME
-        let prefix = '.vim'
-        let dir_list = {
-                    \ 'backup': 'backupdir',
-                    \ 'views': 'viewdir',
-                    \ 'swap': 'directory' }
-
-        if has('persistent_undo')
-            let dir_list['undo'] = 'undodir'
-        endif
-
-        for [dirname, settingname] in items(dir_list)
-            let directory = parent . '/' . prefix . dirname . "/"
-            if exists("*mkdir")
-                if !isdirectory(directory)
-                    call mkdir(directory)
-                endif
-            endif
-            if !isdirectory(directory)
-                echo "Warning: Unable to create backup directory: " . directory
-                echo "Try: mkdir -p " . directory
-            else
-                let directory = substitute(directory, " ", "\\\\ ", "g")
-                exec "set " . settingname . "=" . directory
-            endif
-        endfor
-    endfunction
-    call InitializeDirectories()
-
-    function! NERDTreeInitAsNeeded()
-        redir => bufoutput
-        buffers!
-        redir END
-        let idx = stridx(bufoutput, "NERD_tree")
-        if idx > -1
-            NERDTreeMirror
-            NERDTreeFind
-            wincmd l
-        endif
-    endfunction
-
-    " Strip whitespace
-    function! StripTrailingWhitespace()
-        " To disable the stripping of whitespace, add the following to your
-        " .vimrc.local file:
-        "   let g:spf13_keep_trailing_whitespace = 1
-        if !exists('g:spf13_keep_trailing_whitespace')
-            " Preparation: save last search, and cursor position.
-            let _s=@/
-            let l = line(".")
-            let c = col(".")
-            " do the business:
-            %s/\s\+$//e
-            " clean up: restore previous search history, and cursor position
-            let @/=_s
-            call cursor(l, c)
-        endif
-    endfunction
-"}}}
-"{{{ Custom functions
-    function! MaximizeToggle()
-      if exists("s:maximize_session")
-        exec "source " . s:maximize_session
-        call delete(s:maximize_session)
-        unlet s:maximize_session
-        let &hidden=s:maximize_hidden_save
-        unlet s:maximize_hidden_save
-      else
-        let s:maximize_hidden_save = &hidden
-        let s:maximize_session = tempname()
-        set hidden
-        exec "mksession! " . s:maximize_session
-        only
-      endif
-    endfunction
-"}}}
-
-"{{{ Plugin settings
-    "{{{ PIV
-        let g:DisableAutoPHPFolding = 0
-        let g:PIVAutoClose = 0
-    "}}}
-    "{{{ Misc
-        let g:NERDShutUp=1
-        let b:match_ignorecase = 1
-
-        " Documentation block templates and hotkey
-        let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates"
-        nnoremap <buffer> <Leader>p :call pdv#DocumentCurrentLine()<CR>
-        let g:ctrlp_follow_symlinks = 2
-        let g:EclimCompletionMethod = 'omnifunc'
-        autocmd Filetype php setlocal omnifunc=eclim#php#complete#CodeComplete
-        set completeopt-=preview
-        let g:ycm_add_preview_to_completeopt=0
-
-    "}}}
-    "{{{ NerdTree
-        map <C-e> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
-        map <leader>e :NERDTreeFind<CR>
-        nmap <leader>nt :NERDTreeFind<CR>
-
-        let NERDTreeShowBookmarks=0
-        let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
-        let NERDTreeChDirMode=0
-        let NERDTreeQuitOnOpen=0
-        let NERDTreeMouseMode=2
-        let NERDTreeShowHidden=1
-        let NERDTreeKeepTreeInNewTab=1
-        let g:nerdtree_tabs_open_on_gui_startup=0
-    "}}}
-    "{{{ Tabularize
-        nmap <Leader>a= :Tabularize /=<CR>
-        vmap <Leader>a= :Tabularize /=<CR>
-        nmap <Leader>a: :Tabularize /:<CR>
-        vmap <Leader>a: :Tabularize /:<CR>
-        nmap <Leader>a:: :Tabularize /:\zs<CR>
-        vmap <Leader>a:: :Tabularize /:\zs<CR>
-        nmap <Leader>a, :Tabularize /,<CR>
-        vmap <Leader>a, :Tabularize /,<CR>
-        nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-        vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-     "}}}
-     "{{{ Indent_guides
-        set ts=4 sw=4 et
-        let g:indent_guides_start_level = 2
-        let g:indent_guides_guide_size = 1
-        let g:indent_guides_enable_on_vim_startup = 1
-        let g:indent_guides_auto_colors = 0
-        autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=233
-        autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=232
-     "}}}
-     "{{{ Redmine integration
-        " let g:redmine_auth_site = ''
-        " let g:redmine_auth_key  = ''
-        " let g:redmine_author_id = ''
-        " let g:redmine_project_id = ''
-     "}}}
-     "{{{ Airline config
-        let g:airline_symbols = {}
-        let g:airline_left_sep = '⮀'
-        let g:airline_left_alt_sep = '⮁'
-        let g:airline_right_sep = '⮂'
-        let g:airline_right_alt_sep = '⮃'
-        let g:airline_symbols.branch = '⭠'
-        let g:airline_symbols.readonly = '⭤'
-        let g:airline_symbols.linenr = '⭡'
-
-        let g:airline_theme='bubblegum'
-        let g:airline_powerline_fonts = 1
-     "}}}
-"}}}
+    set hidden
+    
+let mapleader = ","
+nnoremap <Leader><Leader><Esc> :let mapleader=","<CR>
