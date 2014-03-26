@@ -80,7 +80,7 @@ Bundle 'godlygeek/csapprox'
 " vim-scripts repos
 Bundle 'L9'
 
-nnoremap <C-S-z> :Bufferlistsw<CR>
+nnoremap <C-q> :Bufferlistsw<CR>
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
