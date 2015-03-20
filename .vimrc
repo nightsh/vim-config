@@ -20,6 +20,8 @@ Bundle 'tpope/vim-unimpaired'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-abolish'
 Bundle 'tpope/vim-rails.git'
+Bundle 'tpope/vim-rake.git'
+Bundle 'tpope/vim-bundler.git'
 Bundle 'tpope/vim-repeat'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'Lokaltog/vim-easymotion'
@@ -37,12 +39,12 @@ Bundle "honza/vim-snippets"
 
 " vim-misk is needed by vim-easytags
 Bundle 'xolox/vim-misc'
-Bundle 'xolox/vim-easytags'
+" UnBundle 'xolox/vim-easytags'
 Bundle 'taglist.vim'
 Bundle 'majutsushi/tagbar'
 Bundle 'Shougo/neocomplete.vim'
 Bundle 'vim-scripts/EasyGrep'
-Bundle 'jaredly/vim-debug'
+"UnBundle 'jaredly/vim-debug'
 Bundle 'rking/ag.vim'
 Bundle 'bling/vim-airline'
 Bundle 'Shougo/unite.vim'
@@ -54,7 +56,7 @@ Bundle 'rodjek/vim-puppet'
 " Bundle 'Shougo/vimproc.vim'
 
 " spf13 bundles
-    "UnBundle 'spf13/PIV'
+    " UnBundle 'spf13/PIV'
     Bundle 'rayburgemeestre/phpfolding.vim'
     Bundle 'python.vim'
     Bundle 'pythoncomplete'
@@ -72,15 +74,34 @@ Bundle 'rodjek/vim-puppet'
     Bundle 'mbbill/undotree'
     Bundle 'nathanaelkane/vim-indent-guides'
     Bundle 'vim-scripts/restore_view.vim'
+    Bundle 'dhruvasagar/vim-dotoo'
 
 Bundle 'sandeepcr529/Buffet.vim'
 Bundle 'Shougo/neomru.vim'
 Bundle 'godlygeek/csapprox'
 
+Bundle 'flazz/vim-colorschemes'
+
+Bundle 'maksimr/vim-jsbeautify'
+
+" UnBundle 'Yggdroot/indentLine'
+Bundle 'mikewest/vimroom'
+
+Bundle 'xsbeats/vim-blade'
+Bundle 'kurkale6ka/vim-pairs'
+Bundle 'szw/vim-ctrlspace'
+
 " vim-scripts repos
 Bundle 'L9'
 
-nnoremap <C-q> :Bufferlistsw<CR>
+Bundle 's3rvac/AutoFenc'
+Plugin 'dsawardekar/ember.vim'
+Bundle 'dsawardekar/portkey'
+Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'malithsen/trello-vim'
+Bundle 'cakebaker/scss-syntax.vim'
+
+nnoremap <C-x> :Bufferlistsw<CR>
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -106,12 +127,6 @@ map Q gq
 " text is lost and it only works for putting the current register.
 "vnoremap p "_dp
 
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
-  syntax on
-  set hlsearch
-endif
 
   set t_Co=256
 if $COLORTERM == 'gnome-terminal' || $TERM == 'xterm' || $TERM == 'screen'
@@ -120,10 +135,22 @@ endif
 
 if $COLORTERM == 'drop-down-terminal'
   " set t_Co=256
-  colorscheme desert 
+  colorscheme nightsh
 else
   " Color scheme
-  colorscheme monokai
+  "colorscheme monokai
+  colorscheme nightsh
+endif
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
+  syntax on
+  set hlsearch
+endif
+
+if (has("gui_running"))
+  colorscheme flattown
 endif
 
 " Switch wrap off for everything
@@ -141,7 +168,7 @@ if has("autocmd")
   autocmd BufNewFile,BufRead *.txt setfiletype text
 
   " Enable soft-wrapping for text files
-  autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
+  autocmd FileType text,markdown,html,xhtml,eruby,mail setlocal wrap linebreak nolist tw=79 formatoptions+=t
 
   " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
@@ -178,6 +205,7 @@ endif " has("autocmd")
 " endif
 
 " Softtabs, 2 spaces
+set softtabstop=2
 set tabstop=2
 set shiftwidth=2
 set expandtab
@@ -185,8 +213,16 @@ set expandtab
 " Always display the status line
 set laststatus=2
 
-let g:airline_theme='powerlineish'
-let g:airline_powerline_fonts=1
+" let g:airline_theme='powerlineish'
+" let g:airline_left_sep = '⮀'
+" let g:airline_left_alt_sep = '⮁'
+" let g:airline_right_sep = '⮂'
+" let g:airline_right_alt_sep = '⮃'
+" let g:airline_branch = '⭠'
+" let g:airline_readonly = '⭤'
+" let g:airline_linenr = '⭡'
+
+let g:airline_powerline_fonts = 1
 " let g:airline#extensions#tabline#enabled = 1
 
 " Edit the README_FOR_APP (makes :R commands work)
@@ -340,8 +376,8 @@ let g:ycm_key_list_select_completion = ['<C-j>', '<C-Space>']
 let g:ycm_key_list_previous_completion = ['<C-k']
 
 " Remap tab to snip mate
-imap <Tab> <Plug>snipMateNextOrTrigger
-smap <Tab> <Plug>snipMateNextOrTrigger
+" imap <Tab> <Plug>snipMateNextOrTrigger
+" smap <Tab> <Plug>snipMateNextOrTrigger
 
 " numbers do not show for Control+C, they show only for Esc
 map <C-C> <ESC>
@@ -363,12 +399,12 @@ nnoremap <C-W>x :only<CR>
 
 
 if exists(":Tabularize")
-  nmap <Leader>a= :Tabularize /=<CR>
-  vmap <Leader>a= :Tabularize /=<CR>
-  nmap <Leader>a: :Tabularize /:\zs<CR>
-  vmap <Leader>a: :Tabularize /:\zs<CR>
-  nmap <Leader>a^ :Tabularize /^\zs<CR>
-  vmap <Leader>a^ :Tabularize /^\zs<CR>
+  nmap <Leader>a= :Tab /=<CR>
+  vmap <Leader>a= :Tab /=<CR>
+  nmap <Leader>a: :Tab /:\zs<CR>
+  vmap <Leader>a: :Tab /:\zs<CR>
+  nmap <Leader>a^ :Tab /^\zs<CR>
+  vmap <Leader>a^ :Tab /^\zs<CR>
 endif
 
 
@@ -393,10 +429,10 @@ nnoremap <C-E> :NERDTreeToggle<CR>
 
     set nowrap                      " Do not wrap long lines
     set autoindent                  " Indent at the same level of the previous line
-    set shiftwidth=4                " Use indents of 4 spaces
+    set shiftwidth=2                " Use indents of 4 spaces
     set expandtab                   " Tabs are spaces, not tabs
-    set tabstop=4                   " An indentation every four columns
-    set softtabstop=4               " Let backspace delete indent
+    set tabstop=2                   " An indentation every four columns
+    set softtabstop=2               " Let backspace delete indent
     set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
     set splitright                  " Puts new vsplit windows to the right of the current
     set splitbelow                  " Puts new split windows to the bottom of the current
@@ -444,6 +480,7 @@ nnoremap <C-E> :NERDTreeToggle<CR>
     command! -bang QA qa<bang>
     command! -bang Qa qa<bang>
     cmap Tabe tabe
+    nnoremap <Leader>s :w<CR>
 
     " Yank from the cursor to the end of the line, to be consistent with C and D.
     nnoremap Y y$
@@ -466,6 +503,19 @@ nnoremap <C-E> :NERDTreeToggle<CR>
     map zh zH
 
     set hidden
+
     
 let mapleader = ","
 nnoremap <Leader><Leader><Esc> :let mapleader=","<CR>
+
+" Autocommand to reduce pending-operator delay in insert mode
+augroup FastEscape
+    autocmd!
+    au InsertEnter * set timeoutlen=500
+    au InsertLeave * set timeoutlen=1000
+augroup END
+
+inoremap jj <esc>
+nnoremap <F5> :set cursorcolumn!<CR>
+
+set laststatus=2
