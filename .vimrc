@@ -100,6 +100,7 @@ Bundle 'dsawardekar/portkey'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'malithsen/trello-vim'
 Bundle 'cakebaker/scss-syntax.vim'
+Bundle 'vim-visual-increment'
 
 nnoremap <C-x> :Bufferlistsw<CR>
 
